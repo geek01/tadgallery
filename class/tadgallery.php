@@ -314,6 +314,11 @@ class tadgallery
         //撈出底下子分類
         $sql = "select csn,title,passwd,show_mode,cover,uid,content from " . $xoopsDB->prefix("tad_gallery_cate") . " $where order by $order";
 
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar = getPageBar($sql, 20);//新增
+        $bar     = $PageBar['bar'];//新增
+        $sql     = $PageBar['sql'];//新增
+
         $result = $xoopsDB->query($sql) or web_error($sql);
         $i      = 0;
         while (list($fcsn, $title, $passwd, $show_mode, $cover, $uid, $content) = $xoopsDB->fetchRow($result)) {
@@ -361,6 +366,7 @@ class tadgallery
         } else {
             $xoopsTpl->assign("count", $i);
             $xoopsTpl->assign("albums", $albums);
+            $xoopsTpl->assign("bar_album", $bar);//新增
         }
     }
 
@@ -421,7 +427,7 @@ class tadgallery
 
         $and_good = $this->view_good ? "and a.`good`='1'" : '';
 
-        $limit = !empty($this->limit) ? "limit 0 , " . $this->limit : "";
+        //$limit = !empty($this->limit) ? "limit 0 , " . $this->limit : "";
 
         $orderby = ($this->orderby == "rand") ? "rand()" : "a.{$this->orderby}";
 
@@ -429,6 +435,12 @@ class tadgallery
         //找出分類下所有相片
         $sql = "select a.* , b.title from " . $xoopsDB->prefix("tad_gallery") . " as a left join  " . $xoopsDB->prefix("tad_gallery_cate") . " as b on a.csn=b.csn where 1 $and_csn $and_good $and_uid order by {$orderby} {$this->order_desc} {$limit}";
         //die($sql);
+
+        //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+        $PageBar = getPageBar($sql, $this->limit);//新增
+        $bar     = $PageBar['bar'];//新增
+        $sql     = $PageBar['sql'];//新增
+
         $result = $xoopsDB->queryF($sql) or web_error($sql);
 
         $pp = $types = "";
@@ -499,6 +511,8 @@ class tadgallery
             $xoopsTpl->assign("extension", $extension);
             break;
         }
+
+        $xoopsTpl->assign("bar", $bar);//新增
 
         return $photo;
 

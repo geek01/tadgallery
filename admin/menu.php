@@ -20,11 +20,11 @@ $adminmenu[$i]['icon']  = "images/admin/pictures.png";
 // $adminmenu[$i]['desc']  = _MI_TADGAL_ADMENU2;
 // $adminmenu[$i]['icon']  = "images/admin/category_2.png";
 
-$i++;
-$adminmenu[$i]['title'] = _MI_TADGAL_ADMENU5;
-$adminmenu[$i]['link']  = "admin/main.php?op=mk_rss_xml";
-$adminmenu[$i]['desc']  = _MI_TADGAL_ADMENU5;
-$adminmenu[$i]['icon']  = "images/admin/rss2_3_13.png";
+//$i++;
+//$adminmenu[$i]['title'] = _MI_TADGAL_ADMENU5;
+//$adminmenu[$i]['link']  = "admin/main.php?op=mk_rss_xml";
+//$adminmenu[$i]['desc']  = _MI_TADGAL_ADMENU5;
+//$adminmenu[$i]['icon']  = "images/admin/rss2_3_13.png";
 
 $i++;
 $adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;

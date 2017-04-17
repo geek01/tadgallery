@@ -68,5 +68,6 @@
     <{assign var="total" value=$total+1}>
   <{/foreach}>
 
-  <hr>
+  <{$bar_album}>
+
 <{/if}>

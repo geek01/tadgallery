@@ -44,17 +44,6 @@ function edit_photo($sn)
         </div>
       </div>
       <div class='form-group'>
-        <label class='col-sm-2 control-label'>" . _MD_TADGAL_IS360 . "</label>
-        <div class='col-sm-10 controls'>
-          <label class='radio-inline'>
-            <input type='radio' name='is360' value='1' " . chk($photo['is360'], '1', 0) . ">" . _YES . "
-          </label>
-          <label class='radio-inline'>
-            <input type='radio' name='is360' value='0' " . chk($photo['is360'], '0', 1) . ">" . _NO . "
-          </label>
-        </div>
-      </div>
-      <div class='form-group'>
         <label class='col-sm-2 control-label'>" . _MD_TADGAL_DESCRIPTION . "</label>
         <div class='col-sm-10'>
           <textarea class='form-control' name='description' id='newDescription'>{$photo['description']}</textarea>

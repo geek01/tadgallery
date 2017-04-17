@@ -97,6 +97,17 @@ function insert_tad_gallery()
         $orginal_file_name = strtolower(basename($_FILES['image']["name"])); //get lowercase filename
         $file_ending       = substr(strtolower($orginal_file_name), -3); //file extension
 
+        preg_match('/\.([^\.]*$)/', $orginal_file_name, $extension);
+        if (is_array($extension) && sizeof($extension) > 0) {
+            $file_src_name_ext = strtolower($extension[1]);
+            $file_src_name_body = md5(substr($orginal_file_name, 0, ((strlen($orginal_file_name) - strlen($file_src_name_ext))) - 1));
+        } else {
+            $file_src_name_ext = '';
+            $file_src_name_body = $orginal_file_name;
+        }
+
+        $safe_name = "{$file_src_name_body}.{$file_src_name_ext}";
+
         $pic    = getimagesize($_FILES['image']['tmp_name']);
         $width  = $pic[0];
         $height = $pic[1];
@@ -118,7 +129,7 @@ function insert_tad_gallery()
 
         $now = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
         $sql = "insert into " . $xoopsDB->prefix("tad_gallery") . " (
-      `csn`, `title`, `description`, `filename`, `size`, `type`, `width`, `height`, `dir`, `uid`, `post_date`, `counter`, `exif`, `tag`, `good`, `photo_sort`,`is360`) values('{$csn}','{$_POST['title']}','{$_POST['description']}','{$_FILES['image']['name']}','{$_FILES['image']['size']}','{$_FILES['image']['type']}','{$width}','{$height}','{$dir}','{$uid}','{$now}','0','{$exif}','','0',0,'{$is360}')";
+      `csn`, `title`, `description`, `filename`, `size`, `type`, `width`, `height`, `dir`, `uid`, `post_date`, `counter`, `exif`, `tag`, `good`, `photo_sort`,`is360`) values('{$csn}','{$_POST['title']}','{$_POST['description']}','{$safe_name}','{$_FILES['image']['size']}','{$_FILES['image']['type']}','{$width}','{$height}','{$dir}','{$uid}','{$now}','0','{$exif}','','0',0,'{$is360}')";
 
         $xoopsDB->query($sql) or web_error($sql);
         //取得最後新增資料的流水編號
@@ -213,6 +224,17 @@ function upload_muti_file()
         $orginal_file_name = strtolower(basename($file["name"])); //get lowercase filename
         $file_ending       = substr(strtolower($orginal_file_name), -3); //file extension
 
+        preg_match('/\.([^\.]*$)/', $orginal_file_name, $extension);
+        if (is_array($extension) && sizeof($extension) > 0) {
+            $file_src_name_ext = strtolower($extension[1]);
+            $file_src_name_body = md5(substr($orginal_file_name, 0, ((strlen($orginal_file_name) - strlen($file_src_name_ext))) - 1));
+        } else {
+            $file_src_name_ext = '';
+            $file_src_name_body = $orginal_file_name;
+        }
+
+        $safe_name = "{$file_src_name_body}.{$file_src_name_ext}";
+
         $pic    = getimagesize($file['tmp_name']);
         $width  = $pic[0];
         $height = $pic[1];
@@ -235,7 +257,7 @@ function upload_muti_file()
         $now = date("Y-m-d H:i:s", xoops_getUserTimestamp(time()));
         $sql = "insert into " . $xoopsDB->prefix("tad_gallery") . "
         (`csn`, `title`, `description`, `filename`, `size`, `type`, `width`, `height`, `dir`, `uid`, `post_date`, `counter`, `exif`, `tag`, `good`, `photo_sort`,`is360`)
-        values('{$csn}','','','{$file['name']}','{$file['size']}','{$file['type']}','{$width}','{$height}','{$dir}','{$uid}','{$now}','0','{$exif}','','0', $sort, '{$is360}')";
+        values('{$csn}','','','{$safe_name}','{$file['size']}','{$file['type']}','{$width}','{$height}','{$dir}','{$uid}','{$now}','0','{$exif}','','0', $sort, '{$is360}')";
         $sort++;
         $xoopsDB->query($sql) or web_error($sql);
         //取得最後新增資料的流水編號

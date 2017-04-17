@@ -88,15 +88,15 @@ function import_form()
 
         <div class='form-group'>
             <label class='col-sm-2 control-label'>" . _MD_TADGAL_IMPORT_CSN . "</label>
-            <div class='col-sm-10 controls'>
-                <select name='csn_menu[0]' id='b_csn_menu0' class='b_csn_menu'><option value=''></option></select>
-                <select name='csn_menu[1]' id='b_csn_menu1' class='b_csn_menu' style='display: none;'></select>
-                <select name='csn_menu[2]' id='b_csn_menu2' class='b_csn_menu' style='display: none;'></select>
-                <select name='csn_menu[3]' id='b_csn_menu3' class='b_csn_menu' style='display: none;'></select>
-                <select name='csn_menu[4]' id='b_csn_menu4' class='b_csn_menu' style='display: none;'></select>
-                <select name='csn_menu[5]' id='b_csn_menu5' class='b_csn_menu' style='display: none;'></select>
-                <select name='csn_menu[6]' id='b_csn_menu6' class='b_csn_menu' style='display: none;'></select>
-                <input type='text' name='new_csn' placeholder='" . _MD_TADGAL_NEW_CSN . "' style='width: 200px;'>
+            <div class='col-sm-10 controls form-inline'>
+                <select name='csn_menu[0]' id='b_csn_menu0' class='b_csn_menu form-control'><option value=''></option></select>
+                <select name='csn_menu[1]' id='b_csn_menu1' class='b_csn_menu form-control' style='display: none;'></select>
+                <select name='csn_menu[2]' id='b_csn_menu2' class='b_csn_menu form-control' style='display: none;'></select>
+                <select name='csn_menu[3]' id='b_csn_menu3' class='b_csn_menu form-control' style='display: none;'></select>
+                <select name='csn_menu[4]' id='b_csn_menu4' class='b_csn_menu form-control' style='display: none;'></select>
+                <select name='csn_menu[5]' id='b_csn_menu5' class='b_csn_menu form-control' style='display: none;'></select>
+                <select name='csn_menu[6]' id='b_csn_menu6' class='b_csn_menu form-control' style='display: none;'></select>
+                <input type='text' name='new_csn' class='form-control' placeholder='" . _MD_TADGAL_NEW_CSN . "' style='width: 200px;'>
             </div>
         </div>
 
@@ -255,8 +255,19 @@ function import_tad_gallery($csn_menu = array(), $new_csn = "", $all = array(), 
         $orginal_file_name = strtolower(basename($import[$i]['filename'])); //get lowercase filename
         $file_ending       = substr(strtolower($orginal_file_name), -3); //file extension
 
+        preg_match('/\.([^\.]*$)/', $orginal_file_name, $extension);
+        if (is_array($extension) && sizeof($extension) > 0) {
+            $file_src_name_ext = strtolower($extension[1]);
+            $file_src_name_body = md5(substr($orginal_file_name, 0, ((strlen($orginal_file_name) - strlen($file_src_name_ext))) - 1));
+        } else {
+            $file_src_name_ext = '';
+            $file_src_name_body = $orginal_file_name;
+        }
+
+        $safe_name = "{$file_src_name_body}.{$file_src_name_ext}";
+
         $sql = "insert into " . $xoopsDB->prefix("tad_gallery") . " (
-      `csn`, `title`, `description`, `filename`, `size`, `type`, `width`, `height`, `dir`, `uid`, `post_date`, `counter`, `exif`, `tag`, `good`, `photo_sort`) values('{$csn}','','','{$import[$i]['filename']}','{$import[$i]['size']}','{$import[$i]['type']}','{$import[$i]['width']}','{$import[$i]['height']}','{$import[$i]['dir']}','{$uid}','{$import[$i]['post_date']}','0','{$import[$i]['exif']}','','0',$sort)";
+      `csn`, `title`, `description`, `filename`, `size`, `type`, `width`, `height`, `dir`, `uid`, `post_date`, `counter`, `exif`, `tag`, `good`, `photo_sort`) values('{$csn}','','','{$safe_name}','{$import[$i]['size']}','{$import[$i]['type']}','{$import[$i]['width']}','{$import[$i]['height']}','{$import[$i]['dir']}','{$uid}','{$import[$i]['post_date']}','0','{$import[$i]['exif']}','','0',$sort)";
         $sort++;
         $xoopsDB->query($sql) or web_error($sql);
         //取得最後新增資料的流水編號

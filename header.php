@@ -16,14 +16,15 @@ if ($xoopsUser) {
     $isAdmin   = $xoopsUser->isAdmin($module_id);
 }
 
-$interface_menu[_TAD_TO_MOD] = "index.php";
+//$interface_menu[_TAD_TO_MOD] = "index.php";
 
 $csn                                 = (empty($_REQUEST['csn'])) ? "" : intval($_REQUEST['csn']);
-$interface_menu[_MD_TADGAL_COOLIRIS] = "cooliris.php?csn=$csn";
+//$interface_menu[_MD_TADGAL_COOLIRIS] = "cooliris.php?csn=$csn";
 
 $upload_powers = tadgallery::chk_cate_power("upload");
 
 if ((!empty($upload_powers) and $xoopsUser) or $isAdmin) {
+	$interface_menu[_TAD_TO_MOD] = "index.php";
     $interface_menu[_MD_TADGAL_UPLOAD_PAGE] = "uploads.php";
 }
 

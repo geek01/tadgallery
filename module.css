@@ -60,11 +60,11 @@ table#view_photo td {
 
 
 td#pre_photo:hover{
-    background-image:url('images/photonav_prev.png');
+    /*background-image:url('images/photonav_prev.png');*/
 }
 
 td#next_photo:hover{
-    background-image:url('images/photonav_next.png');
+    /*background-image:url('images/photonav_next.png');*/
 }
 
 
@@ -74,19 +74,22 @@ td#next_photo:hover{
 
 /* index.php */
 .pic_title2 {
-  font-size:11px;
-  height:18px;
+  font-size:12px;
+  height:30px;
   line-height:16px;
   position: absolute;
   left: 0px;
   bottom: 0px;
-  width: 140px;
+  width: 130px;
   color: gray;
   font-weight: normal;
   background-color: rgb(249,249,249);
   text-align:center;
   vertical-align:middle;
+  text-overflow:ellipsis;
+  white-space:nowrap;
   overflow:hidden;
+  padding: 5px;
 }
 
 select {
